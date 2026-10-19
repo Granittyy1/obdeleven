@@ -1,0 +1,39 @@
+package io.intercom.android.sdk.m5.conversation.ui;
+
+import kotlin.coroutines.intrinsics.CoroutineSingletons;
+import kotlin.coroutines.jvm.internal.SuspendLambda;
+
+/* JADX INFO: compiled from: ConversationScreen.kt */
+/* JADX INFO: loaded from: classes3.dex */
+@Aa.c(c = "io.intercom.android.sdk.m5.conversation.ui.ConversationScreenKt$ConversationScreenContent$showBottomSheet$1", f = "ConversationScreen.kt", l = {}, m = "invokeSuspend")
+public final class ConversationScreenKt$ConversationScreenContent$showBottomSheet$1 extends SuspendLambda implements Ia.p<kotlinx.coroutines.A, kotlin.coroutines.c<? super p293xa.r>, Object> {
+    final /* synthetic */ androidx.compose.runtime.X<Boolean> $openBottomSheet;
+    int label;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public ConversationScreenKt$ConversationScreenContent$showBottomSheet$1(androidx.compose.runtime.X<Boolean> x10, kotlin.coroutines.c<? super ConversationScreenKt$ConversationScreenContent$showBottomSheet$1> cVar) {
+        super(2, cVar);
+        this.$openBottomSheet = x10;
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final kotlin.coroutines.c<p293xa.r> create(Object obj, kotlin.coroutines.c<?> cVar) {
+        return new ConversationScreenKt$ConversationScreenContent$showBottomSheet$1(this.$openBottomSheet, cVar);
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Object invokeSuspend(Object obj) {
+        CoroutineSingletons coroutineSingletons = CoroutineSingletons.f43038b;
+        if (this.label != 0) {
+            throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+        }
+        kotlin.b.b(obj);
+        this.$openBottomSheet.setValue(Boolean.TRUE);
+        return p293xa.r.f47939a;
+    }
+
+    @Override // Ia.p
+    public final Object invoke(kotlinx.coroutines.A a10, kotlin.coroutines.c<? super p293xa.r> cVar) {
+        return ((ConversationScreenKt$ConversationScreenContent$showBottomSheet$1) create(a10, cVar)).invokeSuspend(p293xa.r.f47939a);
+    }
+}

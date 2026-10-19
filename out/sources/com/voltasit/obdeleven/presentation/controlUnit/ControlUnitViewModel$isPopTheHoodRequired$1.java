@@ -1,0 +1,26 @@
+package com.voltasit.obdeleven.presentation.controlUnit;
+
+import kotlin.coroutines.jvm.internal.ContinuationImpl;
+import me.zhanghai.android.materialprogressbar.R;
+
+/* JADX INFO: compiled from: ControlUnitViewModel.kt */
+/* JADX INFO: loaded from: classes3.dex */
+@Aa.c(c = "com.voltasit.obdeleven.presentation.controlUnit.ControlUnitViewModel", f = "ControlUnitViewModel.kt", l = {R.styleable.AppCompatTheme_textAppearanceListItem}, m = "isPopTheHoodRequired")
+final class ControlUnitViewModel$isPopTheHoodRequired$1 extends ContinuationImpl {
+    int label;
+    /* synthetic */ Object result;
+    final /* synthetic */ ControlUnitViewModel this$0;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public ControlUnitViewModel$isPopTheHoodRequired$1(ControlUnitViewModel controlUnitViewModel, ContinuationImpl continuationImpl) {
+        super(continuationImpl);
+        this.this$0 = controlUnitViewModel;
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Object invokeSuspend(Object obj) {
+        this.result = obj;
+        this.label |= Integer.MIN_VALUE;
+        return ControlUnitViewModel.b(this.this$0, this);
+    }
+}

@@ -1,0 +1,21 @@
+package m8;
+
+import com.parse.boltsinternal.Continuation;
+import com.parse.boltsinternal.Task;
+
+/* JADX INFO: compiled from: BasicSettings.java */
+/* JADX INFO: loaded from: classes3.dex */
+public final class c implements Continuation<Void, Task<Void>> {
+
+    /* JADX INFO: renamed from: a, reason: collision with root package name */
+    public final /* synthetic */ g f44612a;
+
+    public c(g gVar) {
+        this.f44612a = gVar;
+    }
+
+    @Override // com.parse.boltsinternal.Continuation
+    public final Task<Void> then(Task<Void> task) throws Exception {
+        return this.f44612a.a();
+    }
+}

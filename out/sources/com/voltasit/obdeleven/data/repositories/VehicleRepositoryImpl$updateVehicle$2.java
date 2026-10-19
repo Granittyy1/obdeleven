@@ -1,0 +1,53 @@
+package com.voltasit.obdeleven.data.repositories;
+
+import G8.H;
+import kotlin.coroutines.intrinsics.CoroutineSingletons;
+import kotlin.coroutines.jvm.internal.SuspendLambda;
+import kotlinx.coroutines.A;
+
+/* JADX INFO: compiled from: VehicleRepositoryImpl.kt */
+/* JADX INFO: loaded from: classes3.dex */
+@Aa.c(c = "com.voltasit.obdeleven.data.repositories.VehicleRepositoryImpl$updateVehicle$2", f = "VehicleRepositoryImpl.kt", l = {232}, m = "invokeSuspend")
+final class VehicleRepositoryImpl$updateVehicle$2 extends SuspendLambda implements Ia.p<A, kotlin.coroutines.c<? super p293xa.r>, Object> {
+    final /* synthetic */ H $vehicle;
+    int label;
+    final /* synthetic */ VehicleRepositoryImpl this$0;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public VehicleRepositoryImpl$updateVehicle$2(VehicleRepositoryImpl vehicleRepositoryImpl, H h8, kotlin.coroutines.c<? super VehicleRepositoryImpl$updateVehicle$2> cVar) {
+        super(2, cVar);
+        this.this$0 = vehicleRepositoryImpl;
+        this.$vehicle = h8;
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final kotlin.coroutines.c<p293xa.r> create(Object obj, kotlin.coroutines.c<?> cVar) {
+        return new VehicleRepositoryImpl$updateVehicle$2(this.this$0, this.$vehicle, cVar);
+    }
+
+    @Override // Ia.p
+    public final Object invoke(A a10, kotlin.coroutines.c<? super p293xa.r> cVar) {
+        return ((VehicleRepositoryImpl$updateVehicle$2) create(a10, cVar)).invokeSuspend(p293xa.r.f47939a);
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Object invokeSuspend(Object obj) {
+        CoroutineSingletons coroutineSingletons = CoroutineSingletons.f43038b;
+        int i10 = this.label;
+        if (i10 == 0) {
+            kotlin.b.b(obj);
+            kotlinx.coroutines.channels.a<H> aVar = this.this$0.f30329g;
+            H h8 = this.$vehicle;
+            this.label = 1;
+            if (aVar.t(h8, this) == coroutineSingletons) {
+                return coroutineSingletons;
+            }
+        } else {
+            if (i10 != 1) {
+                throw new IllegalStateException("call to 'resume' before 'invoke' with coroutine");
+            }
+            kotlin.b.b(obj);
+        }
+        return p293xa.r.f47939a;
+    }
+}

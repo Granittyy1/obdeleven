@@ -1,0 +1,11 @@
+package com.google.android.gms.internal.measurement;
+
+/* JADX INFO: compiled from: com.google.android.gms:play-services-measurement-impl@@21.6.1 */
+/* JADX INFO: loaded from: classes3.dex */
+public interface G4 {
+    boolean b();
+
+    boolean x();
+
+    boolean y();
+}

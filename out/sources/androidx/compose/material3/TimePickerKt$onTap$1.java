@@ -1,0 +1,24 @@
+package androidx.compose.material3;
+
+import kotlin.coroutines.jvm.internal.ContinuationImpl;
+
+/* JADX INFO: compiled from: TimePicker.kt */
+/* JADX INFO: loaded from: classes.dex */
+@Aa.c(c = "androidx.compose.material3.TimePickerKt", f = "TimePicker.kt", l = {894, 897}, m = "onTap-rOwcSBo")
+final class TimePickerKt$onTap$1 extends ContinuationImpl {
+    Object L$0;
+    boolean Z$0;
+    int label;
+    /* synthetic */ Object result;
+
+    public TimePickerKt$onTap$1() {
+        throw null;
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Object invokeSuspend(Object obj) {
+        this.result = obj;
+        this.label |= Integer.MIN_VALUE;
+        return TimePickerKt.p(null, 0.0f, 0.0f, 0.0f, false, 0L, this);
+    }
+}

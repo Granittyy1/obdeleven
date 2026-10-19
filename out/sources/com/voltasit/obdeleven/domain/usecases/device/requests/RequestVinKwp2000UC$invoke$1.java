@@ -1,0 +1,27 @@
+package com.voltasit.obdeleven.domain.usecases.device.requests;
+
+import kotlin.coroutines.jvm.internal.ContinuationImpl;
+
+/* JADX INFO: compiled from: RequestVinKwp2000UC.kt */
+/* JADX INFO: loaded from: classes3.dex */
+@Aa.c(c = "com.voltasit.obdeleven.domain.usecases.device.requests.RequestVinKwp2000UC", f = "RequestVinKwp2000UC.kt", l = {20, 29}, m = "invoke-vckuEUM")
+final class RequestVinKwp2000UC$invoke$1 extends ContinuationImpl {
+    Object L$0;
+    short S$0;
+    int label;
+    /* synthetic */ Object result;
+    final /* synthetic */ e this$0;
+
+    /* JADX WARN: 'super' call moved to the top of the method (can break code semantics) */
+    public RequestVinKwp2000UC$invoke$1(e eVar, ContinuationImpl continuationImpl) {
+        super(continuationImpl);
+        this.this$0 = eVar;
+    }
+
+    @Override // kotlin.coroutines.jvm.internal.BaseContinuationImpl
+    public final Object invokeSuspend(Object obj) {
+        this.result = obj;
+        this.label |= Integer.MIN_VALUE;
+        return this.this$0.a((short) 0, this);
+    }
+}

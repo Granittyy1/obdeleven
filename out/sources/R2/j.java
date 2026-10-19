@@ -1,0 +1,8 @@
+package R2;
+
+/* JADX INFO: compiled from: R8$$SyntheticClass */
+/* JADX INFO: loaded from: classes.dex */
+public final /* synthetic */ class j {
+    public static /* synthetic */ void c() {
+    }
+}
