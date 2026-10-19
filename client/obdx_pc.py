@@ -16,12 +16,14 @@ Tier-1 tweaks (2022 A6 C8, confirmed reachable, long-coding bit flips):
   needle/gauge sweep  : codingbit 0x714 20103 1.0 1   (cluster byte1 bit0 -> 1)
   lap timer           : codingbit 0x714 20103 1.3 1   (cluster byte1 bit3 -> 1)
   window auto-drop    : codingbit 0x74a <code> 3.1 0  and  0x74b <code> 3.1 0 (doors byte3 bit1 -> 0)
-Login codes: BCM1/09 = 20113 (confirmed). Cluster/17 = 20103 (candidate, unverified).
+Login codes: BCM1/09 = 20113 (confirmed). Cluster/17 = 20103 (confirmed live 2026-10-19).
 If unlock says nrc=0x35 (badkey) STOP - wrong code; do not retry (lockout nrc 36/37).
+Coding writes auto-send the tester stamp the ECU requires (date 2E F199 + workshop 2E F198)
+before 2E 0600; if a prelude step is refused the tool stops and writes no coding.
 
 Needs the dongle powered (ignition on) and in BLE range.
 """
-import argparse, asyncio, random, sys
+import argparse, asyncio, datetime, random, sys
 
 FFE0 = "0000ffe0-0000-1000-8000-00805f9b34fb"
 FFE1 = "0000ffe1-0000-1000-8000-00805f9b34fb"
@@ -143,7 +145,8 @@ async def cmd_vin():
     c=await connect()
     try:
         d=Dongle(c); await d.start(); await init(d)
-        await d.send('2200'+le(0x7e8)); await d.send('2201'+le(0x7df))
+        await d.send('2002',0.1)                              # prep (required, else 21ff)
+        await d.send('2200'+le(0x7e8)); await d.send('2201'+le(0x7e0))  # physical addr 7E0 (7DF returns no data)
         r=await d.uds('0902',0.8); allhex=''.join(p.hex() for p in r)
         i=allhex.find('490201')
         if i>=0:
@@ -222,6 +225,25 @@ async def _seedkey(d,code):
         return (False, f"rejected nrc={nrc:#04x} (35=badkey 36=tooManyAttempts 37=lockout)")
     return (False, f"unexpected: {hk or '(none)'}")
 
+# A UDS long-coding write is NOT a lone 2E 0600. The app (ControlUnit.writeSid22Long-
+# CodingSync) first writes the tester "stamp": the date (DID F199) then the workshop /
+# repair-shop code (DID F198). Skip them and the ECU answers 7F 2E 24 (requestSequence-
+# Error). The app's F198 value is 077328F6 + an equipment suffix (I.b.j(), an obfuscated
+# constant jadx could not emit); the ECU only records the stamp, so any well-formed 9-byte
+# RSC is accepted. Change WORKSHOP_RSC if a cluster rejects the length.
+WORKSHOP_RSC = "077328F60000000000"   # 9 bytes (4 from the app's constant + 5 pad)
+
+async def _tester_stamp(d):
+    """Write date (2E F199 YYMMDD) + workshop code (2E F198 RSC) the ECU requires before a
+    long-coding write. Call AFTER unlock. Returns (ok, detail); ok=False => do NOT write coding."""
+    now=datetime.datetime.now()
+    datehex=f"{now.year%100:02d}{now.month:02d}{now.day:02d}"   # app uses %ty%tm%td
+    r=await d.uds('2ef199'+datehex,0.6); u=d.uds_resp(r)
+    if u[:2]!=b'\x6e\xf1': return (False, f"date (2E F199) refused: {u.hex() or '(none)'}")
+    r=await d.uds('2ef198'+WORKSHOP_RSC,0.6); u=d.uds_resp(r)
+    if u[:2]!=b'\x6e\xf1': return (False, f"workshop (2E F198) refused: {u.hex() or '(none)'}")
+    return (True, f"date={datehex} rsc={WORKSHOP_RSC}")
+
 async def cmd_unlock(target,code):
     tgt=parse_target(target)
     c=await connect()
@@ -268,6 +290,9 @@ async def cmd_codingwrite(target,code,newhex):
         ok,detail=await _seedkey(d,code)
         print(f"unlock: {'OK' if ok else 'FAIL'} {detail}")
         if not ok: print("abort: not unlocked."); return
+        sok,sdetail=await _tester_stamp(d)
+        print(f"tester stamp: {'OK' if sok else 'FAIL'} {sdetail}")
+        if not sok: print("abort: ECU rejected the required date/workshop pre-write; coding NOT written."); return
         w=await d.uds('2e0600'+newhex,0.8); uw=d.uds_resp(w)
         if uw[:2]==b'\x6e\x06': print(f"WRITE OK (6e0600). new coding: {newhex}")
         else: print(f"write response: {uw.hex() or '(none)'} (7F2E xx = refused)")
@@ -303,6 +328,9 @@ async def cmd_codingbit(target,code,bytebit,value):
         ok,detail=await _seedkey(d,code)
         print(f"unlock: {'OK' if ok else 'FAIL'} {detail}")
         if not ok: print("abort: not unlocked; nothing written."); return
+        sok,sdetail=await _tester_stamp(d)
+        print(f"tester stamp: {'OK' if sok else 'FAIL'} {sdetail}")
+        if not sok: print("abort: ECU rejected the required date/workshop pre-write; coding NOT written."); return
         w=await d.uds('2e0600'+new.hex(),0.8); uw=d.uds_resp(w)
         if uw[:2]==b'\x6e\x06': print("WRITE OK (6e0600).")
         else: print(f"write refused: {uw.hex() or '(none)'} (7F2E xx)")
